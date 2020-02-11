@@ -1,6 +1,5 @@
 <script>
-  import SearchBar from "../components/searchBar.svelte";
-  import Header from "../components/header.svelte";
+  import { SearchBar, Header, NoteInput, TodoList } from "../components";
 
   let screenWidth;
   const updateScreenSize = () => {
@@ -27,5 +26,7 @@
   <SearchBar />
   <div class="body-wrapper" style="padding: 0 {screenWidth * 0.2}px">
     <Header />
+    <NoteInput />
+    <TodoList />
   </div>
 </div>

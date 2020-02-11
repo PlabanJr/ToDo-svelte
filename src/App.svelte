@@ -8,6 +8,7 @@
 
   :global(body) {
     padding: 0;
+    background: #5a5a5a;
   }
   :global(*) {
     color: #faf8ff;
@@ -17,6 +18,12 @@
   main {
     height: 100%;
     width: 100%;
+    overflow: scroll;
+    overflow: -moz-scrollbars-none;
+  }
+
+  main::-webkit-scrollbar {
+    width: 0 !important;
   }
 </style>
 

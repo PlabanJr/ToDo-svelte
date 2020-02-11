@@ -70,7 +70,7 @@
     <span class="gear-icon">
       <FaCog />
     </span>
-    <span class="mode-icon" on:click={() => toggleMode()}>
+    <span class="mode-icon" on:click={toggleMode}>
       {#if $currentTheme === DARK}
         <MdBrightness4 />
       {:else}
