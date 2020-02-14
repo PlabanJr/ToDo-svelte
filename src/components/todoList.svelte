@@ -12,18 +12,17 @@
 
   const { DONE, ON_GOING } = TodoStatus;
   const { Scorpion, CaribbeanGreen, JetStream } = Colors;
+  let currentlyUpdating = {
+    id: null,
+    state: false
+  };
 
   const deleteTodo = id =>
     Todos.update(todos => todos.filter(todo => todo.id != id));
 
   const toggleEditView = (id, visibility) => {
-    if (visibility === "show") {
-      document.getElementById(id + "textField").style.display = "block";
-      document.getElementById(id + "todoBody").style.display = "none";
-    } else {
-      document.getElementById(id + "textField").style.display = "none";
-      document.getElementById(id + "todoBody").style.display = "block";
-    }
+    currentlyUpdating.id = id;
+    currentlyUpdating.state = visibility;
   };
 
   const updateTodo = id => {
@@ -37,7 +36,7 @@
           return todos;
         });
 
-        toggleEditView(id, "hide");
+        toggleEditView(id, false);
       }
     });
   };
@@ -60,6 +59,13 @@
 </script>
 
 <style>
+  .show {
+    display: block !important;
+  }
+  .hide {
+    display: none !important;
+  }
+
   .todo-list-wrapper {
     margin-top: 10px;
   }
@@ -150,7 +156,6 @@
     border: none;
     border-bottom: 1px solid #908f8f;
     padding: 5px;
-    display: none;
   }
 
   @media only screen and (min-width: 480px) {
@@ -201,11 +206,15 @@
             <!-- <span class="todo-header">{heading}</span> -->
             <input
               bind:value={text}
-              class="edit-box todo-body"
+              class="edit-box todo-body {currentlyUpdating.id === id && currentlyUpdating.state ? 'show' : 'hide'}"
               type="text"
               id={id + 'textField'}
               on:keydown={updateTodo(id)} />
-            <div class="todo-body" id={id + 'todoBody'}>{text}</div>
+            <div
+              class="todo-body {currentlyUpdating.id !== id || !currentlyUpdating.state ? 'show' : 'hide'}"
+              id={id + 'todoBody'}>
+              {text}
+            </div>
           </div>
         </div>
 
@@ -217,7 +226,7 @@
             <span class="meta-data">{updatedAt}</span>
           </div>
           <div class="status-button-wrapper">
-            <div class="status-button" on:click={toggleEditView(id, 'show')}>
+            <div class="status-button" on:click={toggleEditView(id, true)}>
               <FaPencilAlt />
             </div>
             <div
