@@ -1,14 +1,20 @@
 <script>
-  import { Todos } from "../store/store.js";
+  import { Todos, isSearching, searchList } from "../store/store.js";
   import {
     FaListAlt,
     FaRegThumbsUp,
     FaRegThumbsDown,
     FaPencilAlt,
-    FaTrashAlt
+    FaTrashAlt,
+    FaRegSadTear
   } from "../reusables/icons.js";
   import { Colors, TodoStatus } from "../constants/index.js";
   const business = "../../public/images/portfolio.svg";
+  $: todoList = $isSearching ? [...$searchList] : [...$Todos];
+  $: noResultText =
+    $isSearching && $searchList.length === 0
+      ? "No results found.."
+      : "No items added yet...";
 
   const { DONE, ON_GOING } = TodoStatus;
   const { Scorpion, CaribbeanGreen, JetStream } = Colors;
@@ -59,6 +65,21 @@
 </script>
 
 <style>
+  .noResultText {
+    font-size: 20px;
+    text-align: center;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .noResultIcon {
+    height: 40px;
+    width: 40px;
+    margin-bottom: 10px;
+  }
+
   .show {
     display: block !important;
   }
@@ -193,8 +214,8 @@
 </style>
 
 <div class="todo-list-wrapper">
-  {#if $Todos.length > 0}
-    {#each $Todos as { id, heading, tags, text, createdAt, updatedAt, status }, i}
+  {#if todoList.length > 0}
+    {#each todoList as { id, heading, tags, text, createdAt, updatedAt, status }, i}
       <div class="todo-item-wrapper" style="background: {Scorpion}" {id}>
 
         <div class="upper-wrapper">
@@ -252,5 +273,12 @@
 
       </div>
     {/each}
+  {:else}
+    <div class="noResultText">
+      <div class="noResultIcon">
+        <FaRegSadTear />
+      </div>
+      {noResultText}
+    </div>
   {/if}
 </div>

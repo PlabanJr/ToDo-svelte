@@ -2,10 +2,22 @@
   import InputBox from "../reusables/inputBox.svelte";
   import { Colors, Themes } from "../constants";
   import { MdSearch } from "../reusables/icons.js";
+  import { Todos, isSearching, searchList } from "../store/store.js";
 
   let screenWidth;
   const updateScreenSize = () => {
     screenWidth = window.innerWidth;
+  };
+
+  const handleSearch = searchText => {
+    $isSearching = !!searchText;
+
+    const searchResults = $Todos.filter(
+      todo =>
+        searchText && todo.text.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    searchList.update(list => [...searchResults]);
   };
 
   window.addEventListener("resize", updateScreenSize);
@@ -43,7 +55,6 @@
   <div class="search-icon">
     <MdSearch />
   </div>
-
-  <InputBox placeholder="Search anything...." />
+  <InputBox placeholder="Search anything...." onChangeCB={handleSearch} />
 
 </header>

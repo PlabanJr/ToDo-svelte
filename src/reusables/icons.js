@@ -9,6 +9,7 @@ import FaRegThumbsUp from 'svelte-icons/fa/FaRegThumbsUp.svelte';
 import FaRegThumbsDown from 'svelte-icons/fa/FaRegThumbsDown.svelte';
 import FaPencilAlt from 'svelte-icons/fa/FaPencilAlt.svelte';
 import FaTrashAlt from 'svelte-icons/fa/FaTrashAlt.svelte';
+import FaRegSadTear from 'svelte-icons/fa/FaRegSadTear.svelte';
 
 export {
   MdSearch,
@@ -21,5 +22,6 @@ export {
   FaRegThumbsUp,
   FaRegThumbsDown,
   FaPencilAlt,
-  FaTrashAlt
+  FaTrashAlt,
+  FaRegSadTear
 };

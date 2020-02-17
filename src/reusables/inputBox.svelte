@@ -1,5 +1,7 @@
 <script>
-  export let placeholder;
+  export let placeholder, onChangeCB;
+
+  let searchText = "";
 </script>
 
 <style>
@@ -17,4 +19,8 @@
   }
 </style>
 
-<input type="text" {placeholder} />
+<input
+  type="text"
+  bind:value={searchText}
+  {placeholder}
+  on:input={onChangeCB(searchText)} />
