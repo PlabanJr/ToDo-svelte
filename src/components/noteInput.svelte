@@ -4,10 +4,12 @@
   import { Todos } from "../store/store.js";
   import { generateId } from "../utils";
 
-  let value;
+  let value = "";
 
   const addToList = () => {
-    const currentDate = new Date("10/02/2020").toDateString();
+    if (value === "") return;
+
+    const currentDate = new Date().toDateString();
     const newTodo = {
       id: generateId(),
       heading: "Todo",

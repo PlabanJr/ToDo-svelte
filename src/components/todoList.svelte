@@ -1,5 +1,6 @@
 <script>
   import { Todos, isSearching, searchList } from "../store/store.js";
+  import { fade, fly } from "svelte/transition";
   import {
     FaListAlt,
     FaRegThumbsUp,
@@ -216,7 +217,12 @@
 <div class="todo-list-wrapper">
   {#if todoList.length > 0}
     {#each todoList as { id, heading, tags, text, createdAt, updatedAt, status }, i}
-      <div class="todo-item-wrapper" style="background: {Scorpion}" {id}>
+      <div
+        class="todo-item-wrapper"
+        style="background: {Scorpion}"
+        {id}
+        in:fade
+        out:fly={{ y: 500, duration: 500 }}>
 
         <div class="upper-wrapper">
           <div class="left-view">
@@ -274,7 +280,7 @@
       </div>
     {/each}
   {:else}
-    <div class="noResultText">
+    <div class="noResultText" in:fly={{ duration: 1000, y: 800 }}>
       <div class="noResultIcon">
         <FaRegSadTear />
       </div>
