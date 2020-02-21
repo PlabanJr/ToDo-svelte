@@ -7,14 +7,16 @@
   let value = "";
 
   const addToList = () => {
-    if (value === "") return;
+    const todoBody = value.trimStart();
+
+    if (!todoBody.length) return;
 
     const currentDate = new Date().toDateString();
     const newTodo = {
       id: generateId(),
       heading: "Todo",
       tags: ["#one"],
-      text: value,
+      text: todoBody.trimEnd(),
       createdAt: currentDate,
       updatedAt: currentDate,
       status: TodoStatus.ON_GOING
@@ -26,6 +28,13 @@
 
   const clearTextArea = () => {
     value = "";
+  };
+
+  const checkKeyVal = e => {
+    if (e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+      addToList();
+    }
   };
 </script>
 
@@ -76,7 +85,8 @@
     style="background: {Colors.DoveGray}"
     placeholder="Write a note or paste a link"
     bind:value
-    id="noteInput" />
+    id="noteInput"
+    on:keyup={checkKeyVal} />
   <div class="cta-view">
     <div class="cta-buttons" on:click={addToList}>
       <IoMdCheckmark />

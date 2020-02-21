@@ -35,7 +35,7 @@
   const updateTodo = id => {
     const textField = document.getElementById(id + "textField");
     textField.addEventListener("keyup", e => {
-      if (e.keyCode == 13) {
+      if (e.keyCode == 13 && !e.shiftKey) {
         Todos.update(todos => {
           const index = todos.findIndex(obj => obj.id === id);
           todos[index].updatedAt = new Date().toDateString();
@@ -178,6 +178,15 @@
     border: none;
     border-bottom: 1px solid #908f8f;
     padding: 5px;
+    resize: none;
+    outline: none;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    border: none;
+  }
+
+  pre {
+    margin: 0;
   }
 
   @media only screen and (min-width: 480px) {
@@ -216,13 +225,13 @@
 
 <div class="todo-list-wrapper">
   {#if todoList.length > 0}
-    {#each todoList as { id, heading, tags, text, createdAt, updatedAt, status }, i}
+    {#each todoList as { id, heading, tags, text, createdAt, updatedAt, status }, i (id)}
       <div
         class="todo-item-wrapper"
         style="background: {Scorpion}"
         {id}
-        in:fade
-        out:fly={{ y: 500, duration: 500 }}>
+        in:fade={{ duration: 500 }}
+        out:fly={{ x: 500, duration: 900 }}>
 
         <div class="upper-wrapper">
           <div class="left-view">
@@ -231,7 +240,7 @@
 
           <div class="right-view">
             <!-- <span class="todo-header">{heading}</span> -->
-            <input
+            <textarea
               bind:value={text}
               class="edit-box todo-body {currentlyUpdating.id === id && currentlyUpdating.state ? 'show' : 'hide'}"
               type="text"
@@ -240,7 +249,7 @@
             <div
               class="todo-body {currentlyUpdating.id !== id || !currentlyUpdating.state ? 'show' : 'hide'}"
               id={id + 'todoBody'}>
-              {text}
+              <pre>{text}</pre>
             </div>
           </div>
         </div>
