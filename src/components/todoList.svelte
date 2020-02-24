@@ -1,5 +1,10 @@
 <script>
-  import { Todos, isSearching, searchList } from "../store/store.js";
+  import {
+    Todos,
+    isSearching,
+    searchList,
+    CurrentFilter
+  } from "../store/store.js";
   import { fade, fly } from "svelte/transition";
   import {
     FaListAlt,
@@ -11,7 +16,11 @@
   } from "../reusables/icons.js";
   import { Colors, TodoStatus } from "../constants/index.js";
   const business = "../../public/images/portfolio.svg";
-  $: todoList = $isSearching ? [...$searchList] : [...$Todos];
+  $: todoList = $isSearching
+    ? [...$searchList]
+    : $CurrentFilter === ""
+    ? [...$Todos]
+    : filterTodos($CurrentFilter);
   $: noResultText =
     $isSearching && $searchList.length === 0
       ? "No results found.."
@@ -22,6 +31,17 @@
   let currentlyUpdating = {
     id: null,
     state: false
+  };
+
+  const filterTodos = filter => {
+    switch (filter) {
+      case "done":
+        return $Todos.filter(todo => todo.status === TodoStatus.DONE);
+      case "undone":
+        return $Todos.filter(todo => todo.status === TodoStatus.ON_GOING);
+      default:
+        return $Todos;
+    }
   };
 
   const deleteTodo = id =>
@@ -79,6 +99,7 @@
     height: 40px;
     width: 40px;
     margin-bottom: 10px;
+    cursor: pointer;
   }
 
   .show {
@@ -154,16 +175,13 @@
   }
 
   .status-button {
-    width: 200px;
-  }
-
-  .status-button {
     height: 22px;
     width: 24px;
     background: rgba(0, 0, 0, 0.4);
     border-radius: 30px;
     padding: 10px;
     margin-left: 10px;
+    cursor: pointer;
   }
 
   .status-button-wrapper {
@@ -267,19 +285,19 @@
             </div>
             <div
               class="status-button"
-              style="background: rgba(255, 0, 0 , 0.6)"
+              style="background: #fe6464"
               on:click={deleteTodo(id)}>
               <FaTrashAlt />
             </div>
             <div
               class="status-button"
-              style="background:{status === DONE ? CaribbeanGreen : JetStream}"
+              style="background:{status === DONE ? JetStream : ''}"
               on:click={markDone(id)}>
               <FaRegThumbsUp />
             </div>
             <div
               class="status-button {status}"
-              style="background:{status === ON_GOING ? CaribbeanGreen : JetStream}"
+              style="background:{status === ON_GOING ? JetStream : ''}"
               on:click={markUndone(id)}>
               <FaRegThumbsDown />
             </div>

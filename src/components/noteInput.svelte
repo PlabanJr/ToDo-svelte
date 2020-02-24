@@ -69,6 +69,7 @@
     background: #c1c1c1;
     border-radius: 20px;
     padding: 2px;
+    cursor: pointer;
   }
 
   .note-input-wrapper {

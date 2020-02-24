@@ -6,3 +6,4 @@ export const currentTheme = writable(Themes.DARK);
 export const Todos = writable([]);
 export const isSearching = writable(false);
 export const searchList = writable([]);
+export const CurrentFilter = writable('');
